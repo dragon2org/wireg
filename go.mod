@@ -1,4 +1,4 @@
-module github.com/dragon2org/wiregg
+module github.com/dragon2org/wireg
 
 go 1.18
 
