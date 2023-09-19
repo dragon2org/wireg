@@ -768,7 +768,7 @@ func processStructLiteralProvider(fset *token.FileSet, typeName *types.TypeName)
 
 	pos := typeName.Pos()
 	fmt.Fprintf(os.Stderr,
-		"Warning: %v, see https://godoc.org/github.com/dragon2org/wire#Struct for more information.\n",
+		"Warning: %v, see https://godoc.org/github.com/dragon2org/wireg#Struct for more information.\n",
 		notePosition(fset.Position(pos),
 			fmt.Errorf("using struct literal to inject %s is deprecated and will be removed in the next release; use wireg.Struct instead",
 				typeName.Type())))
@@ -1139,7 +1139,7 @@ func isWireImport(path string) bool {
 	if i := strings.LastIndex(path, vendorPart); i != -1 && (i == 0 || path[i-1] == '/') {
 		path = path[i+len(vendorPart):]
 	}
-	return path == "github.com/dragon2org/wireg"
+	return path == "github.com/dragon2org/wiregg"
 }
 
 func isProviderSetType(t types.Type) bool {

@@ -17,8 +17,6 @@ package main
 import (
 	"io"
 	"strings"
-
-	"github.com/dragon2org/wire"
 )
 
 type context struct{}

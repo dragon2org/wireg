@@ -17,10 +17,6 @@
 
 package main
 
-import (
-	"github.com/dragon2org/wire"
-)
-
 func injectedBaz() Baz {
 	wire.Build(provideFoo, provideBar, wire.FieldsOf(new(Bar), "Bz"))
 	return 0

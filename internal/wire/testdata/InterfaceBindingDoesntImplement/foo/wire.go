@@ -17,10 +17,6 @@
 
 package main
 
-import (
-	"github.com/dragon2org/wire"
-)
-
 func injectFooer() Fooer {
 	// wrong: string doesn't implement Fooer.
 	wire.Build(wire.Bind(new(Fooer), new(string)))

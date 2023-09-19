@@ -18,7 +18,6 @@
 package main
 
 import (
-	"github.com/dragon2org/wire"
 	"io"
 )
 

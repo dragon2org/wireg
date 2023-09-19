@@ -17,10 +17,6 @@
 
 package main
 
-import (
-	"github.com/dragon2org/wire"
-)
-
 /* blockComment returns Foo and has a /*- style doc comment */
 func blockComment() *Foo {
 	panic(wire.Build(wire.Struct(new(Foo))))

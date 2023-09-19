@@ -20,7 +20,6 @@ package main
 import (
 	_ "example.com/anon1" // intentionally duplicated
 	_ "example.com/anon2"
-	"github.com/dragon2org/wire"
 )
 
 func injectFooBar() FooBar {

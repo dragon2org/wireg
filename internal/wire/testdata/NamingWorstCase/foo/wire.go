@@ -19,8 +19,6 @@ package main
 
 import (
 	stdcontext "context"
-
-	"github.com/dragon2org/wire"
 )
 
 func inject(context stdcontext.Context, err struct{}) (context, error) {

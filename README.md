@@ -1,7 +1,7 @@
 # Wire: Automated Initialization in Go
 
-[![Build Status](https://github.com/dragon2org/wire/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/dragon2org/wire/actions)
-[![godoc](https://godoc.org/github.com/dragon2org/wire?status.svg)][godoc]
+[![Build Status](https://github.com/dragon2org/wireg/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/dragon2org/wireg/actions)
+[![godoc](https://godoc.org/github.com/dragon2org/wireg?status.svg)][godoc]
 [![Coverage](https://codecov.io/gh/google/wire/branch/master/graph/badge.svg)](https://codecov.io/gh/google/wire)
 
 
@@ -16,7 +16,7 @@ For an overview, see the [introductory blog post][].
 
 [dependency injection]: https://en.wikipedia.org/wiki/Dependency_injection
 [introductory blog post]: https://blog.golang.org/wire
-[godoc]: https://godoc.org/github.com/dragon2org/wire
+[godoc]: https://godoc.org/github.com/dragon2org/wireg
 [travis]: https://travis-ci.com/google/wire
 
 ## Installing
@@ -24,7 +24,7 @@ For an overview, see the [introductory blog post][].
 Install Wire by running:
 
 ```shell
-go install github.com/dragon2org/wireg/cmd/wireg@latest
+go install github.com/dragon2org/wiregg/cmd/wireg@latest
 ```
 
 and ensuring that `$GOPATH/bin` is added to your `$PATH`.
@@ -52,7 +52,7 @@ reports and fixes.
 
 ## Community
 
-For questions, please use [GitHub Discussions](https://github.com/dragon2org/wire/discussions).
+For questions, please use [GitHub Discussions](https://github.com/dragon2org/wireg/discussions).
 
 This project is covered by the Go [Code of Conduct][].
 

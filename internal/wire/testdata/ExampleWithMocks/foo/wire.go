@@ -17,10 +17,6 @@
 
 package main
 
-import (
-	"github.com/dragon2org/wire"
-)
-
 // initApp returns a real app.
 func initApp() *app {
 	wire.Build(appSet)

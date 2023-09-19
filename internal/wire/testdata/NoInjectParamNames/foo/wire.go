@@ -19,8 +19,6 @@ package main
 
 import (
 	stdcontext "context"
-
-	"github.com/dragon2org/wire"
 )
 
 // The notable characteristic of this test is that there are no

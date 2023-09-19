@@ -25,8 +25,6 @@ import (
 	"fmt"
 	"os"
 	"reflect"
-
-	"github.com/dragon2org/wire"
 )
 
 type context struct{}

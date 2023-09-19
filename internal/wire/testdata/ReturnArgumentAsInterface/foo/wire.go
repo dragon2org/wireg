@@ -19,8 +19,6 @@ package main
 
 import (
 	"fmt"
-
-	"github.com/dragon2org/wire"
 )
 
 func injectStringer(s MyString) fmt.Stringer {

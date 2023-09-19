@@ -490,7 +490,7 @@ func loadTestCase(root string, wireGoSrc []byte) (*testCase, error) {
 		}
 	}
 	goFiles := map[string][]byte{
-		"github.com/dragon2org/wireg/wireg.go": wireGoSrc,
+		"github.com/dragon2org/wiregg/wireg.go": wireGoSrc,
 	}
 	err = filepath.Walk(root, func(src string, info os.FileInfo, err error) error {
 		if err != nil {
@@ -542,9 +542,9 @@ func (test *testCase) materialize(gopath string) error {
 		}
 	}
 
-	// Add go.mod files to example.com and github.com/dragon2org/wireg.
+	// Add go.mod files to example.com and github.com/dragon2org/wiregg.
 	const importPath = "example.com"
-	const depPath = "github.com/dragon2org/wireg"
+	const depPath = "github.com/dragon2org/wiregg"
 	depLoc := filepath.Join(gopath, "src", filepath.FromSlash(depPath))
 	example := fmt.Sprintf("module %s\n\nrequire %s v0.1.0\nreplace %s => %s\n", importPath, depPath, depPath, depLoc)
 	gomod := filepath.Join(gopath, "src", filepath.FromSlash(importPath), "go.mod")

@@ -17,10 +17,6 @@
 
 package main
 
-import (
-	"github.com/dragon2org/wire"
-)
-
 func injectMissingOutputType() Foo {
 	// Error: no provider for Foo.
 	wire.Build()

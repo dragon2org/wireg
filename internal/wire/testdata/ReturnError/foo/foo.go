@@ -18,8 +18,6 @@ import (
 	"errors"
 	"fmt"
 	"strings"
-
-	"github.com/dragon2org/wire"
 )
 
 func main() {

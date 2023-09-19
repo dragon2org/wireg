@@ -21,7 +21,6 @@ import (
 	"os"
 
 	"example.com/bar"
-	"github.com/dragon2org/wire"
 )
 
 func injectedFile() *os.File {

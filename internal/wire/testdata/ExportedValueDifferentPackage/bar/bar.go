@@ -16,8 +16,6 @@ package bar
 
 import (
 	"os"
-
-	"github.com/dragon2org/wire"
 )
 
 var Value = wire.Value(os.Stdout)

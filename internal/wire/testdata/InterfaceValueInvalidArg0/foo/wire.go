@@ -17,10 +17,6 @@
 
 package main
 
-import (
-	"github.com/dragon2org/wire"
-)
-
 func injectedMessage() string {
 	// wrong: arg0 must be a pointer to an interface.
 	wire.Build(wire.InterfaceValue("foo", "bar"))

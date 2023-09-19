@@ -19,7 +19,6 @@ package main
 
 import (
 	"example.com/bar"
-	"github.com/dragon2org/wire"
 )
 
 func injectedMessage() string {

@@ -14,8 +14,6 @@
 
 package bar
 
-import "github.com/dragon2org/wire"
-
 var Value = wire.Value(PublicMsg)
 
 var PublicMsg = "Hello, World!"

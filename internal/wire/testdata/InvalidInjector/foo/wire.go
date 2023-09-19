@@ -17,10 +17,6 @@
 
 package main
 
-import (
-	"github.com/dragon2org/wire"
-)
-
 func injectFoo() Foo {
 	// This non-call statement makes this an invalid injector.
 	_ = 42

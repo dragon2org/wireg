@@ -17,10 +17,6 @@
 
 package main
 
-import (
-	"github.com/dragon2org/wire"
-)
-
 func injectBar(fn func() *Foo) *Bar {
 	// fails because it doesn't identify fn as a Provider; see #723.
 	panic(wire.Build(fn, NewBar))

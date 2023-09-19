@@ -23,7 +23,6 @@ import (
 	"example.com/bar"
 	"example.com/baz"
 	"example.com/foo"
-	"github.com/dragon2org/wire"
 )
 
 func newBazService(*baz.Config) *baz.Service {

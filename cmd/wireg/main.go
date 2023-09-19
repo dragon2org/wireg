@@ -14,7 +14,7 @@
 
 // Wire is a compile-time dependency injection tool.
 //
-// For an overview, see https://github.com/dragon2org/wire/blob/master/README.md
+// For an overview, see https://github.com/dragon2org/wireg/blob/master/README.md
 package main
 
 import (
@@ -31,7 +31,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/dragon2org/wire/internal/wire"
+	"github.com/dragon2org/wireg/internal/wire"
 	"github.com/google/subcommands"
 	"github.com/pmezard/go-difflib/difflib"
 	"golang.org/x/tools/go/types/typeutil"

@@ -17,7 +17,5 @@
 
 package bar
 
-import "github.com/dragon2org/wire"
-
 // Set provides a friendly user greeting.
 var Set = wire.NewSet(wire.Value("Hello, World!"))

@@ -17,10 +17,6 @@
 
 package main
 
-import (
-	"github.com/dragon2org/wire"
-)
-
 func injectedMessagePtr() *string {
 	// This shouldn't work; FieldsOf provides a pointer to the
 	// field only when the struct type is a pointer to a struct.

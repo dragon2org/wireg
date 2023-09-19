@@ -17,10 +17,6 @@
 
 package main
 
-import (
-	"github.com/dragon2org/wire"
-)
-
 func injectFooer() Fooer {
 	wire.Build(provideBar)
 	return nil

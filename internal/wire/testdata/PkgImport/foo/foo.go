@@ -18,7 +18,6 @@ import (
 	"fmt"
 
 	"example.com/bar"
-	"github.com/dragon2org/wire"
 )
 
 func main() {

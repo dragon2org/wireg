@@ -20,8 +20,6 @@ package main
 import (
 	"io"
 	"os"
-
-	"github.com/dragon2org/wire"
 )
 
 func inject() io.Writer {

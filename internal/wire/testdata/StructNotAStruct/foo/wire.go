@@ -17,10 +17,6 @@
 
 package main
 
-import (
-	"github.com/dragon2org/wire"
-)
-
 func inject(a A) string {
 	wire.Build(wire.Struct(new(*A), "*"))
 	return ""

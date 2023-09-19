@@ -16,8 +16,6 @@ package main
 
 import (
 	"fmt"
-
-	"github.com/dragon2org/wire"
 )
 
 func main() {

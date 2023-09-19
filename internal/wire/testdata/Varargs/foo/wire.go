@@ -17,10 +17,6 @@
 
 package main
 
-import (
-	"github.com/dragon2org/wire"
-)
-
 func injectedMessage(t title, lines ...string) string {
 	wire.Build(provideMessage)
 	return ""

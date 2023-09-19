@@ -17,10 +17,6 @@
 
 package main
 
-import (
-	"github.com/dragon2org/wire"
-)
-
 // Wire tries to disambiguate the variable "select" by prepending
 // the package name; this package-scoped variable conflicts with that
 // and forces a different name.

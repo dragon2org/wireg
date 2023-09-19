@@ -17,10 +17,6 @@
 
 package main
 
-import (
-	"github.com/dragon2org/wire"
-)
-
 func injectedMessage() string {
 	// wrong: InterfaceValue requires 2 args.
 	wire.Build(wire.InterfaceValue("foo"))

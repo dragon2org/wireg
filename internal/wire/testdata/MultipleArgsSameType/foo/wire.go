@@ -17,10 +17,6 @@
 
 package main
 
-import (
-	"github.com/dragon2org/wire"
-)
-
 func inject(a, b string) *Foo {
 	// fail: can't have two args of the same type.
 	panic(wire.Build(provideFoo))

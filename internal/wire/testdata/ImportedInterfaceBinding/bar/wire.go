@@ -19,7 +19,6 @@ package main
 
 import (
 	"example.com/foo"
-	"github.com/dragon2org/wire"
 )
 
 func injectFooer() foo.Fooer {

@@ -20,8 +20,6 @@ package main
 import (
 	"io"
 	"strings"
-
-	"github.com/dragon2org/wire"
 )
 
 func injectedReader(r *strings.Reader) io.Reader {
