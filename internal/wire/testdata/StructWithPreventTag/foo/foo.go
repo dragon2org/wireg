@@ -17,8 +17,6 @@ package main
 import (
 	"fmt"
 	"sync"
-
-	"github.com/google/wire"
 )
 
 func main() {
@@ -29,7 +27,7 @@ func main() {
 type Foo int
 
 type FooBar struct {
-	mu  sync.Mutex `wire:"-"`
+	mu  sync.Mutex `wireg:"-"`
 	Foo Foo
 }
 

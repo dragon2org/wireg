@@ -12,14 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//+build wireinject
+//go:build wireinject
+// +build wireinject
 
 package main
 
 import (
 	"strings"
-
-	"github.com/google/wire"
 )
 
 func inject() Foo {
@@ -43,11 +42,11 @@ func injectFromSetWithDuplicateBindings() Foo {
 }
 
 func injectDuplicateValues() Foo {
-	// fail: provideFoo and wire.Value both provide Foo.
+	// fail: provideFoo and wireg.Value both provide Foo.
 	panic(wire.Build(provideFoo, wire.Value(Foo("foo"))))
 }
 
 func injectDuplicateInterface() Bar {
-	// fail: provideBar and wire.Bind both provide Bar.
+	// fail: provideBar and wireg.Bind both provide Bar.
 	panic(wire.Build(provideBar, wire.Bind(new(Bar), new(*strings.Reader))))
 }

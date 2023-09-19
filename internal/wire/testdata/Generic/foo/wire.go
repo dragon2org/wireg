@@ -14,10 +14,8 @@
 //go:build wireinject
 // +build wireinject
 
-// wire.go
+// wireg.go
 package main
-
-import "github.com/google/wire"
 
 func InitializeFooStore() FooStorer {
 	wire.Build(

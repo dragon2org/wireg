@@ -417,7 +417,7 @@ func buildProviderMap(fset *token.FileSet, hasher typeutil.Hasher, set *Provider
 			if setName == "" {
 				setName = "provider set"
 			}
-			ec.add(notePosition(fset.Position(b.Pos), fmt.Errorf("wire.Bind of concrete type %q to interface %q, but %s does not include a provider for %q", b.Provided, b.Iface, setName, b.Provided)))
+			ec.add(notePosition(fset.Position(b.Pos), fmt.Errorf("wireg.Bind of concrete type %q to interface %q, but %s does not include a provider for %q", b.Provided, b.Iface, setName, b.Provided)))
 			continue
 		}
 		providerMap.Set(b.Iface, concrete)

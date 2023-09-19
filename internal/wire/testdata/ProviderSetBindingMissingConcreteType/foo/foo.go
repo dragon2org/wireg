@@ -16,8 +16,6 @@ package main
 
 import (
 	"fmt"
-
-	"github.com/google/wire"
 )
 
 func main() {
@@ -40,7 +38,7 @@ func newFoo() *foo {
 
 var (
 	setA = wire.NewSet(newFoo)
-	// This set is invalid because it has a wire.Bind but no matching provider.
+	// This set is invalid because it has a wireg.Bind but no matching provider.
 	// From the user guide:
 	// Any set that includes an interface binding must also have a provider in
 	// the same set that provides the concrete type.

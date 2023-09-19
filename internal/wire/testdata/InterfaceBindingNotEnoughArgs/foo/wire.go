@@ -12,16 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//+build wireinject
+//go:build wireinject
+// +build wireinject
 
 package main
 
-import (
-	"github.com/google/wire"
-)
-
 func injectFooer() Fooer {
-	// wrong: wire.Bind requires 2 args.
+	// wrong: wireg.Bind requires 2 args.
 	wire.Build(wire.Bind(new(Fooer)))
 	return nil
 }

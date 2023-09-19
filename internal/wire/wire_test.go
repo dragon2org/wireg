@@ -43,7 +43,7 @@ func TestWire(t *testing.T) {
 	}
 	// The marker function package source is needed to have the test cases
 	// type check. loadTestCase places this file at the well-known import path.
-	wireGo, err := ioutil.ReadFile(filepath.Join("..", "..", "wire.go"))
+	wireGo, err := ioutil.ReadFile(filepath.Join("..", "..", "wireg.go"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -124,7 +124,7 @@ func TestWire(t *testing.T) {
 				return
 			}
 			if test.wantWireError {
-				t.Fatal("wire succeeded; want error")
+				t.Fatal("wireg succeeded; want error")
 			}
 			outPathSane := true
 			if prefix := gopath + string(os.PathSeparator) + "src" + string(os.PathSeparator); !strings.HasPrefix(gen.OutputPath, prefix) {
@@ -135,7 +135,7 @@ func TestWire(t *testing.T) {
 			if *record {
 				// Record ==> Build the generated Wire code,
 				// check that the program's output matches the
-				// expected output, save wire output on
+				// expected output, save wireg output on
 				// success.
 				if !outPathSane {
 					return
@@ -158,7 +158,7 @@ func TestWire(t *testing.T) {
 				if !bytes.Equal(gen.Content, test.wantWireOutput) {
 					gotS, wantS := string(gen.Content), string(test.wantWireOutput)
 					diff := cmp.Diff(strings.Split(gotS, "\n"), strings.Split(wantS, "\n"))
-					t.Fatalf("wire output differs from golden file. If this change is expected, run with -record to update the wire_gen.go file.\n*** got:\n%s\n\n*** want:\n%s\n\n*** diff:\n%s", gotS, wantS, diff)
+					t.Fatalf("wireg output differs from golden file. If this change is expected, run with -record to update the wire_gen.go file.\n*** got:\n%s\n\n*** want:\n%s\n\n*** diff:\n%s", gotS, wantS, diff)
 				}
 			}
 		})
@@ -457,13 +457,12 @@ type testCase struct {
 //					(e.g. "$GOPATH/src/foo.go:52:8" --> "foo.go:x:y").
 //
 //			wire_gen.go
-//					verified output of wire from a test run with
+//					verified output of wireg from a test run with
 //					-record, missing if wire_errs.txt is present
 //
 //			program_out.txt
 //					expected output from the final compiled program,
 //					missing if wire_errs.txt is present
-//
 func loadTestCase(root string, wireGoSrc []byte) (*testCase, error) {
 	name := filepath.Base(root)
 	pkg, err := ioutil.ReadFile(filepath.Join(root, "pkg"))
@@ -491,7 +490,7 @@ func loadTestCase(root string, wireGoSrc []byte) (*testCase, error) {
 		}
 	}
 	goFiles := map[string][]byte{
-		"github.com/google/wire/wire.go": wireGoSrc,
+		"github.com/dragon2org/wireg/wireg.go": wireGoSrc,
 	}
 	err = filepath.Walk(root, func(src string, info os.FileInfo, err error) error {
 		if err != nil {
@@ -543,9 +542,9 @@ func (test *testCase) materialize(gopath string) error {
 		}
 	}
 
-	// Add go.mod files to example.com and github.com/google/wire.
+	// Add go.mod files to example.com and github.com/dragon2org/wireg.
 	const importPath = "example.com"
-	const depPath = "github.com/google/wire"
+	const depPath = "github.com/dragon2org/wireg"
 	depLoc := filepath.Join(gopath, "src", filepath.FromSlash(depPath))
 	example := fmt.Sprintf("module %s\n\nrequire %s v0.1.0\nreplace %s => %s\n", importPath, depPath, depPath, depLoc)
 	gomod := filepath.Join(gopath, "src", filepath.FromSlash(importPath), "go.mod")

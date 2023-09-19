@@ -12,15 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// This test demonstrates how to use mocks with wire.
+// This test demonstrates how to use mocks with wireg.
 
 package main
 
 import (
 	"fmt"
 	"time"
-
-	"github.com/google/wire"
 )
 
 func main() {
@@ -72,7 +70,7 @@ var mockAppSet = wire.NewSet(
 	wire.Struct(new(app), "*"),
 	wire.Struct(new(greeter), "*"),
 	wire.Struct(new(appWithMocks), "*"),
-	// For each mocked dependency, add a provider and use wire.Bind to bind
+	// For each mocked dependency, add a provider and use wireg.Bind to bind
 	// the concrete type to the relevant interface.
 	newMockTimer,
 	wire.Bind(new(timer), new(*mockTimer)),

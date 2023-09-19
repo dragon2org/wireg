@@ -58,16 +58,16 @@ func (p *providerSetSrc) description(fset *token.FileSet, typ types.Type) string
 		}
 		return fmt.Sprintf("%s %s(%s)", kind, quoted(p.Provider.Name), fset.Position(p.Provider.Pos))
 	case p.Binding != nil:
-		return fmt.Sprintf("wire.Bind (%s)", fset.Position(p.Binding.Pos))
+		return fmt.Sprintf("wireg.Bind (%s)", fset.Position(p.Binding.Pos))
 	case p.Value != nil:
-		return fmt.Sprintf("wire.Value (%s)", fset.Position(p.Value.Pos))
+		return fmt.Sprintf("wireg.Value (%s)", fset.Position(p.Value.Pos))
 	case p.Import != nil:
 		return fmt.Sprintf("provider set %s(%s)", quoted(p.Import.VarName), fset.Position(p.Import.Pos))
 	case p.InjectorArg != nil:
 		args := p.InjectorArg.Args
 		return fmt.Sprintf("argument %s to injector function %s (%s)", args.Tuple.At(p.InjectorArg.Index).Name(), args.Name, fset.Position(args.Pos))
 	case p.Field != nil:
-		return fmt.Sprintf("wire.FieldsOf (%s)", fset.Position(p.Field.Pos))
+		return fmt.Sprintf("wireg.FieldsOf (%s)", fset.Position(p.Field.Pos))
 	}
 	panic("providerSetSrc with no fields set")
 }
@@ -89,7 +89,7 @@ func (p *providerSetSrc) trace(fset *token.FileSet, typ types.Type) []string {
 // A ProviderSet describes a set of providers.  The zero value is an empty
 // ProviderSet.
 type ProviderSet struct {
-	// Pos is the position of the call to wire.NewSet or wire.Build that
+	// Pos is the position of the call to wireg.NewSet or wireg.Build that
 	// created the set.
 	Pos token.Pos
 	// PkgPath is the import path of the package that declared this set.
@@ -103,7 +103,7 @@ type ProviderSet struct {
 	Values    []*Value
 	Fields    []*Field
 	Imports   []*ProviderSet
-	// InjectorArgs is only filled in for wire.Build.
+	// InjectorArgs is only filled in for wireg.Build.
 	InjectorArgs *InjectorArgs
 
 	// providerMap maps from provided type to a *ProvidedType.
@@ -591,7 +591,7 @@ func (oc *objectCache) processExpr(info *types.Info, pkgPath string, expr ast.Ex
 }
 
 func (oc *objectCache) processNewSet(info *types.Info, pkgPath string, call *ast.CallExpr, args *InjectorArgs, varName string) (*ProviderSet, []error) {
-	// Assumes that call.Fun is wire.NewSet or wire.Build.
+	// Assumes that call.Fun is wireg.NewSet or wireg.Build.
 
 	pset := &ProviderSet{
 		Pos:          call.Pos(),
@@ -758,7 +758,7 @@ func funcOutput(sig *types.Signature) (outputSignature, error) {
 //
 // This is a copy of the old processStructProvider, which is deprecated now.
 // It will not support any new feature introduced after v0.2. Please use the new
-// wire.Struct syntax for those.
+// wireg.Struct syntax for those.
 func processStructLiteralProvider(fset *token.FileSet, typeName *types.TypeName) (*Provider, []error) {
 	out := typeName.Type()
 	st, ok := out.Underlying().(*types.Struct)
@@ -768,9 +768,9 @@ func processStructLiteralProvider(fset *token.FileSet, typeName *types.TypeName)
 
 	pos := typeName.Pos()
 	fmt.Fprintf(os.Stderr,
-		"Warning: %v, see https://godoc.org/github.com/google/wire#Struct for more information.\n",
+		"Warning: %v, see https://godoc.org/github.com/dragon2org/wire#Struct for more information.\n",
 		notePosition(fset.Position(pos),
-			fmt.Errorf("using struct literal to inject %s is deprecated and will be removed in the next release; use wire.Struct instead",
+			fmt.Errorf("using struct literal to inject %s is deprecated and will be removed in the next release; use wireg.Struct instead",
 				typeName.Type())))
 	provider := &Provider{
 		Pkg:      typeName.Pkg(),
@@ -798,7 +798,7 @@ func processStructLiteralProvider(fset *token.FileSet, typeName *types.TypeName)
 // processStructProvider creates a provider for a named struct type.
 // It produces pointer and non-pointer variants via two values in Out.
 func processStructProvider(fset *token.FileSet, info *types.Info, call *ast.CallExpr) (*Provider, error) {
-	// Assumes that call.Fun is wire.Struct.
+	// Assumes that call.Fun is wireg.Struct.
 
 	if len(call.Args) < 1 {
 		return nil, notePosition(fset.Position(call.Pos()),
@@ -874,15 +874,15 @@ func allFields(call *ast.CallExpr) bool {
 }
 
 // isPrevented checks whether field i is prevented by tag "-".
-// Since this is the only tag used by wire, we can do string comparison
+// Since this is the only tag used by wireg, we can do string comparison
 // without using reflect.
 func isPrevented(tag string) bool {
-	return reflect.StructTag(tag).Get("wire") == "-"
+	return reflect.StructTag(tag).Get("wireg") == "-"
 }
 
-// processBind creates an interface binding from a wire.Bind call.
+// processBind creates an interface binding from a wireg.Bind call.
 func processBind(fset *token.FileSet, info *types.Info, call *ast.CallExpr) (*IfaceBinding, error) {
-	// Assumes that call.Fun is wire.Bind.
+	// Assumes that call.Fun is wireg.Bind.
 
 	if len(call.Args) != 2 {
 		return nil, notePosition(fset.Position(call.Pos()),
@@ -928,7 +928,7 @@ func processBind(fset *token.FileSet, info *types.Info, call *ast.CallExpr) (*If
 
 // processValue creates a value from a wire.Value call.
 func processValue(fset *token.FileSet, info *types.Info, call *ast.CallExpr) (*Value, error) {
-	// Assumes that call.Fun is wire.Value.
+	// Assumes that call.Fun is wireg.Value.
 
 	if len(call.Args) != 1 {
 		return nil, notePosition(fset.Position(call.Pos()), errors.New("call to Value takes exactly one argument"))
@@ -958,7 +958,7 @@ func processValue(fset *token.FileSet, info *types.Info, call *ast.CallExpr) (*V
 	if !ok {
 		return nil, notePosition(fset.Position(call.Pos()), errors.New("argument to Value is too complex"))
 	}
-	// Result type can't be an interface type; use wire.InterfaceValue for that.
+	// Result type can't be an interface type; use wireg.InterfaceValue for that.
 	argType := info.TypeOf(call.Args[0])
 	if _, isInterfaceType := argType.Underlying().(*types.Interface); isInterfaceType {
 		return nil, notePosition(fset.Position(call.Pos()), fmt.Errorf("argument to Value may not be an interface value (found %s); use InterfaceValue instead", types.TypeString(argType, nil)))
@@ -971,9 +971,9 @@ func processValue(fset *token.FileSet, info *types.Info, call *ast.CallExpr) (*V
 	}, nil
 }
 
-// processInterfaceValue creates a value from a wire.InterfaceValue call.
+// processInterfaceValue creates a value from a wireg.InterfaceValue call.
 func processInterfaceValue(fset *token.FileSet, info *types.Info, call *ast.CallExpr) (*Value, error) {
-	// Assumes that call.Fun is wire.InterfaceValue.
+	// Assumes that call.Fun is wireg.InterfaceValue.
 
 	if len(call.Args) != 2 {
 		return nil, notePosition(fset.Position(call.Pos()), errors.New("call to InterfaceValue takes exactly two arguments"))
@@ -1000,9 +1000,9 @@ func processInterfaceValue(fset *token.FileSet, info *types.Info, call *ast.Call
 	}, nil
 }
 
-// processFieldsOf creates a slice of fields from a wire.FieldsOf call.
+// processFieldsOf creates a slice of fields from a wireg.FieldsOf call.
 func processFieldsOf(fset *token.FileSet, info *types.Info, call *ast.CallExpr) ([]*Field, error) {
-	// Assumes that call.Fun is wire.FieldsOf.
+	// Assumes that call.Fun is wireg.FieldsOf.
 
 	if len(call.Args) < 2 {
 		return nil, notePosition(fset.Position(call.Pos()),
@@ -1046,7 +1046,7 @@ func processFieldsOf(fset *token.FileSet, info *types.Info, call *ast.CallExpr) 
 		out := []types.Type{v.Type()}
 		if isPtrToStruct {
 			// If the field is from a pointer to a struct, then
-			// wire.Fields also provides a pointer to the field.
+			// wireg.Fields also provides a pointer to the field.
 			out = append(out, types.NewPointer(v.Type()))
 		}
 		fields = append(fields, &Field{
@@ -1070,7 +1070,7 @@ func checkField(f ast.Expr, st *types.Struct) (*types.Var, error) {
 	for i := 0; i < st.NumFields(); i++ {
 		if strings.EqualFold(strconv.Quote(st.Field(i).Name()), b.Value) {
 			if isPrevented(st.Tag(i)) {
-				return nil, fmt.Errorf("%s is prevented from injecting by wire", b.Value)
+				return nil, fmt.Errorf("%s is prevented from injecting by wireg", b.Value)
 			}
 			return st.Field(i), nil
 		}
@@ -1078,7 +1078,7 @@ func checkField(f ast.Expr, st *types.Struct) (*types.Var, error) {
 	return nil, fmt.Errorf("%s is not a field of %s", b.Value, st.String())
 }
 
-// findInjectorBuild returns the wire.Build call if fn is an injector template.
+// findInjectorBuild returns the wireg.Build call if fn is an injector template.
 // It returns nil if the function is not an injector template.
 func findInjectorBuild(info *types.Info, fn *ast.FuncDecl) (*ast.CallExpr, error) {
 	if fn.Body == nil {
@@ -1128,7 +1128,7 @@ func findInjectorBuild(info *types.Info, fn *ast.FuncDecl) (*ast.CallExpr, error
 		return nil, nil
 	}
 	if invalid {
-		return nil, errors.New("a call to wire.Build indicates that this function is an injector, but injectors must consist of only the wire.Build call and an optional return")
+		return nil, errors.New("a call to wireg.Build indicates that this function is an injector, but injectors must consist of only the wireg.Build call and an optional return")
 	}
 	return wireBuildCall, nil
 }
@@ -1139,7 +1139,7 @@ func isWireImport(path string) bool {
 	if i := strings.LastIndex(path, vendorPart); i != -1 && (i == 0 || path[i-1] == '/') {
 		path = path[i+len(vendorPart):]
 	}
-	return path == "github.com/google/wire"
+	return path == "github.com/dragon2org/wireg"
 }
 
 func isProviderSetType(t types.Type) bool {
@@ -1173,9 +1173,9 @@ func (pt ProvidedType) IsNil() bool {
 //
 //   - For a function provider, this is the first return value type.
 //   - For a struct provider, this is either the struct type or the pointer type
-// 	   whose element type is the struct type.
-// 	 - For a value, this is the type of the expression.
-// 	 - For an argument, this is the type of the argument.
+//     whose element type is the struct type.
+//   - For a value, this is the type of the expression.
+//   - For an argument, this is the type of the argument.
 func (pt ProvidedType) Type() types.Type {
 	return pt.t
 }
@@ -1236,12 +1236,12 @@ func (pt ProvidedType) Field() *Field {
 	return pt.f
 }
 
-// bindShouldUsePointer loads the wire package the user is importing from their
-// injector. The call is a wire marker function call.
+// bindShouldUsePointer loads the wireg package the user is importing from their
+// injector. The call is a wireg marker function call.
 func bindShouldUsePointer(info *types.Info, call *ast.CallExpr) bool {
 	// These type assertions should not fail, otherwise panic.
-	fun := call.Fun.(*ast.SelectorExpr)                 // wire.Bind
-	pkgName := fun.X.(*ast.Ident)                       // wire
-	wireName := info.ObjectOf(pkgName).(*types.PkgName) // wire package
+	fun := call.Fun.(*ast.SelectorExpr)                 // wireg.Bind
+	pkgName := fun.X.(*ast.Ident)                       // wireg
+	wireName := info.ObjectOf(pkgName).(*types.PkgName) // wireg package
 	return wireName.Imported().Scope().Lookup("bindToUsePointer") != nil
 }
