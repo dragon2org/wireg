@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Package wire contains directives for Wire code generation.
+// Package wireg contains directives for Wire code generation.
 // For an overview of working with Wire, see the user guide at
-// https://github.com/google/wire/blob/master/docs/guide.md
+// https://github.com/dragon2org/wire/blob/master/docs/guide.md
 //
 // The directives in this package are used as input to the Wire code generation
 // tool. The entry point of Wire's analysis are injector functions: function
@@ -23,7 +23,7 @@
 // directed acylic graph of the providers' output types. The generated code will
 // fill in the function template by using the providers from the provider set to
 // instantiate any needed types.
-package wire
+package wireg
 
 // ProviderSet is a marker type that collects a group of providers.
 type ProviderSet struct{}
@@ -54,7 +54,7 @@ type ProviderSet struct{}
 // S to NewSet declares that both S and *S will be provided by creating a new
 // value of the appropriate type by filling in each field of S using the
 // provider of the field's type. This form is deprecated and will be removed in
-// a future version of Wire: new providers sets should use wire.Struct.
+// a future version of Wire: new providers sets should use wireg.Struct.
 func NewSet(...interface{}) ProviderSet {
 	return ProviderSet{}
 }
@@ -79,15 +79,15 @@ func NewSet(...interface{}) ProviderSet {
 // Examples:
 //
 //	func injector(ctx context.Context) (*sql.DB, error) {
-//		wire.Build(otherpkg.FooSet, myProviderFunc)
+//		wireg.Build(otherpkg.FooSet, myProviderFunc)
 //		return nil, nil
 //	}
 //
 //	func injector(ctx context.Context) (*sql.DB, error) {
-//		panic(wire.Build(otherpkg.FooSet, myProviderFunc))
+//		panic(wireg.Build(otherpkg.FooSet, myProviderFunc))
 //	}
 func Build(...interface{}) string {
-	return "implementation not generated, run wire"
+	return "implementation not generated, run wireg"
 }
 
 // A Binding maps an interface to a concrete type.
@@ -107,15 +107,15 @@ type Binding struct{}
 //
 //	func (MyFoo) Foo() {}
 //
-//	var MySet = wire.NewSet(
-//		wire.Struct(new(MyFoo))
-//		wire.Bind(new(Fooer), new(MyFoo)))
+//	var MySet = wireg.NewSet(
+//		wireg.Struct(new(MyFoo))
+//		wireg.Bind(new(Fooer), new(MyFoo)))
 func Bind(iface, to interface{}) Binding {
 	return Binding{}
 }
 
-// bindToUsePointer is detected by the wire tool to indicate that Bind's second argument should take a pointer.
-// See https://github.com/google/wire/issues/120 for details.
+// bindToUsePointer is detected by the wireg tool to indicate that Bind's second argument should take a pointer.
+// See https://github.com/dragon2org/wire/issues/120 for details.
 const bindToUsePointer = true
 
 // A ProvidedValue is an expression that is copied to the generated injector.
@@ -126,7 +126,7 @@ type ProvidedValue struct{}
 //
 // Example:
 //
-//	var MySet = wire.NewSet(wire.Value([]string(nil)))
+//	var MySet = wireg.NewSet(wireg.Value([]string(nil)))
 func Value(interface{}) ProvidedValue {
 	return ProvidedValue{}
 }
@@ -138,7 +138,7 @@ func Value(interface{}) ProvidedValue {
 //
 // Example:
 //
-//	var MySet = wire.NewSet(wire.InterfaceValue(new(io.Reader), os.Stdin))
+//	var MySet = wireg.NewSet(wireg.InterfaceValue(new(io.Reader), os.Stdin))
 func InterfaceValue(typ interface{}, x interface{}) ProvidedValue {
 	return ProvidedValue{}
 }
@@ -156,12 +156,12 @@ type StructProvider struct{}
 //
 // For example:
 //
-//  type S struct {
-//    MyFoo *Foo
-//    MyBar *Bar
-//  }
-//  var Set = wire.NewSet(wire.Struct(new(S), "MyFoo")) -> inject only S.MyFoo
-//  var Set = wire.NewSet(wire.Struct(new(S), "*")) -> inject all fields
+//	type S struct {
+//	  MyFoo *Foo
+//	  MyBar *Bar
+//	}
+//	var Set = wireg.NewSet(wireg.Struct(new(S), "MyFoo")) -> inject only S.MyFoo
+//	var Set = wireg.NewSet(wireg.Struct(new(S), "*")) -> inject all fields
 func Struct(structType interface{}, fieldNames ...string) StructProvider {
 	return StructProvider{}
 }
@@ -175,22 +175,22 @@ type StructFields struct{}
 //
 // The following example would provide Foo and Bar using S.MyFoo and S.MyBar respectively:
 //
-//  type S struct {
-//  	MyFoo Foo
-//  	MyBar Bar
-//  }
+//	type S struct {
+//		MyFoo Foo
+//		MyBar Bar
+//	}
 //
-//  func NewStruct() S { /* ... */ }
-//  var Set = wire.NewSet(wire.FieldsOf(new(S), "MyFoo", "MyBar"))
+//	func NewStruct() S { /* ... */ }
+//	var Set = wireg.NewSet(wireg.FieldsOf(new(S), "MyFoo", "MyBar"))
 //
-//  or
+//	or
 //
-//  func NewStruct() *S { /* ... */ }
-//  var Set = wire.NewSet(wire.FieldsOf(new(*S), "MyFoo", "MyBar"))
+//	func NewStruct() *S { /* ... */ }
+//	var Set = wireg.NewSet(wireg.FieldsOf(new(*S), "MyFoo", "MyBar"))
 //
-//  If the structType argument is a pointer to a pointer to a struct, then FieldsOf
-//  additionally provides a pointer to each field type (e.g., *Foo and *Bar in the
-//  example above).
+//	If the structType argument is a pointer to a pointer to a struct, then FieldsOf
+//	additionally provides a pointer to each field type (e.g., *Foo and *Bar in the
+//	example above).
 func FieldsOf(structType interface{}, fieldNames ...string) StructFields {
 	return StructFields{}
 }

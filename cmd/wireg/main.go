@@ -49,7 +49,7 @@ func main() {
 
 	// Initialize the default logger to log to stderr.
 	log.SetFlags(0)
-	log.SetPrefix("wire: ")
+	log.SetPrefix("wireg: ")
 	log.SetOutput(os.Stderr)
 
 	// TODO(rvangent): Use subcommands's VisitCommands instead of hardcoded map,
@@ -73,7 +73,7 @@ func main() {
 	os.Exit(int(subcommands.Execute(context.Background())))
 }
 
-// packages returns the slice of packages to run wire over based on f.
+// packages returns the slice of packages to run wireg over based on f.
 // It defaults to ".".
 func packages(f *flag.FlagSet) []string {
 	pkgs := f.Args()
